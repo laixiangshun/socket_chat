@@ -57,7 +57,7 @@ HiChat.prototype={
             messageInput.focus();
             if(msg.trim().length!=0){
                 that.socket.emit('postMsg',msg,color);
-                that._displayNewMsg('me',msg,color);
+                that._displayNewMsg('me',msg,color,'my');
             }
         },false);
         //显示新消息
@@ -123,7 +123,7 @@ HiChat.prototype={
             if(e.keyCode==13 && msg.trim().length!=0){
                 messageInput.value='';
                 that.socket.emit('postMsg',msg,color);
-                that._displayNewMsg('me',msg,color);
+                that._displayNewMsg('me',msg,color,'my');
             }
         },false);
         document.getElementById('clearBtn').addEventListener('click',function(){
@@ -139,12 +139,13 @@ HiChat.prototype={
         },false);
     },
     //显示消息
-    _displayNewMsg:function(user,msg,color){
+    _displayNewMsg:function(user,msg,color,isSelf){
         var container=document.getElementById('historyMsg'),
             msgToDisplay=document.createElement('p'),
             date=new Date().toTimeString().substr(0,8);
         msg=this._showEmoji(msg);//将消息中的表情转化为图片
         msgToDisplay.style.color=color || '#000';
+        msgToDisplay.style.textAlign=(isSelf === 'my' ? 'right' : 'left');
         msgToDisplay.innerHTML=user+'<span class="timespan">('+date+'):</span><br/>'+'<span class="showText">'+msg+'</span>';
         container.appendChild(msgToDisplay);
         container.scrollTop=container.scrollHeight;
@@ -155,6 +156,7 @@ HiChat.prototype={
             msgToDisplay=document.createElement('p'),
             date=new Date().toTimeString().substr(0,8);
         msgToDisplay.style.color=color || '#000';
+        //msgToDisplay.style.textAlign=(isSelf === 'my' ? 'right' : 'left');
         msgToDisplay.innerHTML=user+'<span class="timespan">('+date+'):</span><br/>'+'<a href="'+imgData+'" target="_blank"><img src="'+imgData+'"/></a>';
         container.appendChild(msgToDisplay);
         container.scrollTop=container.scrollHeight;
