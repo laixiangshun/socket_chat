@@ -32,6 +32,7 @@ HiChat.prototype={
         this.socket.on('nickExisted',function(){
             document.getElementById('info').textContent='nickname is taken,choose another';
         });
+        //登录成功-去除遮罩层
         this.socket.on('loginSuccess',function(){
             document.title='hichat | '+document.getElementById('nicknameInput').value;
             document.getElementById('loginWrapper').style.display='none';
@@ -45,7 +46,7 @@ HiChat.prototype={
             //document.getElementById('historyMsg').appendChild(p);
             that._displayNewMsg('system',msg,'red');
             //将在线人数显示到页面顶部
-            document.getElementById('status').textContent=userCount+(userCount>1?' users':' user')+' online';
+            document.getElementById('status').textContent=userCount+(userCount> 1 ? ' users':' user')+' online';
         });
         //发送消息
         document.getElementById('sendBtn').addEventListener('click',function(){
@@ -125,6 +126,17 @@ HiChat.prototype={
                 that._displayNewMsg('me',msg,color);
             }
         },false);
+        document.getElementById('clearBtn').addEventListener('click',function(){
+            var childLength=document.getElementById('historyMsg').children.length;
+            if(childLength>0){
+                var historyMsg=document.getElementById('historyMsg');
+                while(historyMsg.hasChildNodes()){
+                    historyMsg.removeChild(historyMsg.firstChild);
+                }
+                var messageInput=document.getElementById('messageInput');
+                messageInput.focus();
+            }
+        },false);
     },
     //显示消息
     _displayNewMsg:function(user,msg,color){
@@ -133,7 +145,7 @@ HiChat.prototype={
             date=new Date().toTimeString().substr(0,8);
         msg=this._showEmoji(msg);//将消息中的表情转化为图片
         msgToDisplay.style.color=color || '#000';
-        msgToDisplay.innerHTML=user+'<span class="timespan">('+date+'):</span>'+msg;
+        msgToDisplay.innerHTML=user+'<span class="timespan">('+date+'):</span><br/>'+'<span class="showText">'+msg+'</span>';
         container.appendChild(msgToDisplay);
         container.scrollTop=container.scrollHeight;
     },
@@ -165,7 +177,10 @@ HiChat.prototype={
             reg=/\[emoji:\d+\]/g,
             emojiIndex,
             totalEmojiNun=document.getElementById('emojiWrapper').children.length;
-        while(match=reg.exec(msg)){
+        while((match=reg.exec(msg))!=null){
+            //slice:从已有的数组中返回选定的元素slice(start,end)
+            //start：必须，起始位置，如果值为负数时，从末尾位置往前数
+            //end：可选，省略时，代表末尾位置，为负数时，从末尾位置开始计算，往前数
             emojiIndex=match[0].slice(7,-1);
             if(emojiIndex>totalEmojiNun){
                 result=result.replace(match[0],'[X]');

@@ -2,6 +2,7 @@ html,body{
     margin: 0 auto;
     background-color: #efefef;
     font-family: sans-serif;
+    font-size: 16px;
 }
 .wrapper{
     width: 500px;
@@ -29,6 +30,7 @@ html,body{
 .banner{
     height: 80px;
     width: 100%;
+    margin: 5px;
 }
 .banner p{
     float: left;
@@ -44,12 +46,23 @@ html,body{
     background-color: #fff;
     overflow: auto;
     padding: 2px;
+    font-size: 18px;
 }
 #historyMsg img{
     max-width: 99%;
 }
 .timespan{
     color: #ddd;
+}
+.showText{
+    padding: 5px 10px;
+    width: 96%;
+    word-break: normal;
+    display: block;
+    white-space: pre-wrap;
+    overflow: hidden;
+    color: #48DDB5;
+    word-wrap: break-word;
 }
 .items{
     height: 30px;

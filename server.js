@@ -23,6 +23,8 @@ io.on('connection',function(socket){
             socket.nickname=nickname;
             users.push(nickname);
             socket.emit('loginSuccess');
+            console.log(users.length);
+            console.log(users);
             io.sockets.emit('system',nickname,users.length,'login');//向所有连接到服务器的客服端发送当前登录用户的昵称
         }
     });
